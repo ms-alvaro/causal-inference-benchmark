@@ -1,44 +1,43 @@
 ============================================================
-Method : IG
+Method : CTE
 Run    : 2026-03-20 11:06:01
 N      : 200,000
 ============================================================
 
 Case 1: Mediator  (Q3→Q2→Q1 (no direct Q3→Q1))
   Status   : FAIL
-  Dominant : Q2  (score=0.9685)
+  Dominant : Q2  (score=0.9974)
   Expected : Q2
-  Note     : Q2 dominates IG→Q1 (direct driver in mediator chain)
+  Note     : Q2 dominates CTE→Q1 (conditioning removes Q3 spurious path)
   All scores (normalised):
-    Q2      : 0.9685
-    Q3      : 0.0315
-  Spurious   : Q1→Q3⁺
+    Q2      : 0.9974
+    Q3      : 0.0026
+  Spurious   : Q1→Q3⁺, Q2→Q3⁺
 
 Case 2: Confounder  (Q3→Q1 and Q3→Q2 (common cause, no direct Q1↔Q2 link))
   Status   : FAIL
-  Dominant : Q3  (score=0.9310)
+  Dominant : Q3  (score=0.9933)
   Expected : Q3
-  Note     : Q3 dominates IG→Q1 (common cause; Q2 link is spurious)
+  Note     : Q3 dominates CTE→Q1 (Q2 link vanishes after conditioning on Q3)
   All scores (normalised):
-    Q3      : 0.9310
-    Q2      : 0.0690
+    Q3      : 0.9933
+    Q2      : 0.0067
   Spurious   : Q1→Q3⁺, Q2→Q3⁺
 
 Case 3: Synergistic  (Q2×Q3→Q1 (synergistic interaction))
   Status   : FAIL
-  Dominant : Q2  (score=0.5660)
+  Dominant : Q3  (score=0.5097)
   Expected : none
-  Note     : Both Q2 and Q3 show nonzero IG→Q1 (synergistic case)
+  Note     : Both Q2 and Q3 detected via histogram CTE (nonparametric)
   All scores (normalised):
-    Q2      : 0.5660
-    Q3      : 0.4340
+    Q3      : 0.5097
+    Q2      : 0.4903
   Spurious   : Q1→Q2⁺, Q3→Q2⁺, Q1→Q3⁺, Q2→Q3⁺
 
 Case 4: Redundant  (Q2=Q3→Q1 (redundant information))
-  Status   : PASS
-  Dominant : Q2  (score=0.5000)
+  Status   : FAIL
+  Dominant : Q2  (score=0.0000)
   Expected : none
-  Note     : Both Q2 and Q3 show comparable nonzero IG→Q1 (redundant)
+  Note     : Q2 or Q3 detected (redundancy may suppress one conditionally)
   All scores (normalised):
-    Q2      : 0.5000
-    Q3      : 0.5000
+  Spurious   : Q1→Q2⁺, Q1→Q3⁺
